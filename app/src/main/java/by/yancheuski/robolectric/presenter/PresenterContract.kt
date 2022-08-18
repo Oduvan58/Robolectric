@@ -1,4 +1,6 @@
 package by.yancheuski.robolectric.presenter
 
-interface PresenterContract {
+interface PresenterContract<ViewContract> {
+    fun onAttach(viewContract: ViewContract)
+    fun onDetach()
 }
