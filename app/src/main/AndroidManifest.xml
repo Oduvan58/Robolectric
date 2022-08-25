@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="by.yancheuski.robolectric">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -13,8 +15,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Robolectric"
         tools:targetApi="31">
+        <activity android:name=".view.details.DetailsActivity"
+            android:exported="false"/>
         <activity
-            android:name=".MainActivity"
+            android:name="by.yancheuski.robolectric.view.search.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
