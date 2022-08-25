@@ -35,6 +35,18 @@ android {
             includeAndroidResources = true
         }
     }
+
+    flavorDimensions "default"
+    productFlavors {
+        fake {
+            applicationIdSuffix ".fake"
+            versionNameSuffix "-fake"
+        }
+        real {
+            applicationIdSuffix ".real"
+            versionNameSuffix "-real"
+        }
+    }
 }
 
 dependencies {
@@ -64,4 +76,5 @@ dependencies {
     testImplementation 'androidx.test.ext:truth:1.4.0'
     testImplementation 'androidx.test.espresso:espresso-core:3.4.0'
     testImplementation 'androidx.test.espresso:espresso-intents:3.4.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 }

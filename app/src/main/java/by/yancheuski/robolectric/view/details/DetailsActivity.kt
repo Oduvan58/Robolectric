@@ -12,12 +12,22 @@ import java.util.*
 
 class DetailsActivity : AppCompatActivity(), ViewDetailsContract {
 
-    private val presenter: PresenterDetailsContract = DetailsPresenter()
+    private val presenter: PresenterDetailsContract = DetailsPresenter(this)
+
+    companion object {
+
+        const val TOTAL_COUNT_EXTRA = "TOTAL_COUNT_EXTRA"
+
+        fun getIntent(context: Context, totalCount: Int): Intent {
+            return Intent(context, DetailsActivity::class.java).apply {
+                putExtra(TOTAL_COUNT_EXTRA, totalCount)
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_details)
-        presenter.onAttach(this)
         setUI()
     }
 
@@ -36,21 +46,5 @@ class DetailsActivity : AppCompatActivity(), ViewDetailsContract {
     private fun setCountText(count: Int) {
         totalCountTextView.text =
             String.format(Locale.getDefault(), getString(R.string.results_count), count)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        presenter.onDetach()
-    }
-
-    companion object {
-
-        const val TOTAL_COUNT_EXTRA = "TOTAL_COUNT_EXTRA"
-
-        fun getIntent(context: Context, totalCount: Int): Intent {
-            return Intent(context, DetailsActivity::class.java).apply {
-                putExtra(TOTAL_COUNT_EXTRA, totalCount)
-            }
-        }
     }
 }

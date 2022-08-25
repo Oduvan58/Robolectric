@@ -1,4 +1,3 @@
 package by.yancheuski.robolectric.view
 
-interface ViewContract {
-}
+interface ViewContract
