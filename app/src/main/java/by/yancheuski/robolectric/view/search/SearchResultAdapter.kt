@@ -1,5 +1,6 @@
 package by.yancheuski.robolectric.view.search
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +14,7 @@ internal class SearchResultAdapter :
 
     private var results: List<SearchResult> = listOf()
 
+    @SuppressLint("InflateParams")
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int,
@@ -33,6 +35,7 @@ internal class SearchResultAdapter :
         return results.size
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun updateResults(results: List<SearchResult>) {
         this.results = results
         notifyDataSetChanged()

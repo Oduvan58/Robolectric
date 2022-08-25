@@ -8,25 +8,26 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import by.yancheuski.robolectric.R
 import by.yancheuski.robolectric.model.SearchResult
+import by.yancheuski.robolectric.presenter.RepositoryContract
 import by.yancheuski.robolectric.presenter.search.PresenterSearchContract
 import by.yancheuski.robolectric.presenter.search.SearchPresenter
-import by.yancheuski.robolectric.repository.GitHubApi
-import by.yancheuski.robolectric.repository.GitHubRepository
+import by.yancheuski.robolectric.repository.FakeGitHubRepository
 import by.yancheuski.robolectric.view.details.DetailsActivity
+import kotlinx.android.synthetic.main.activity_details.*
 import kotlinx.android.synthetic.main.activity_main.*
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.*
 
 class MainActivity : AppCompatActivity(), ViewSearchContract {
 
     private val adapter = SearchResultAdapter()
-    private val presenter: PresenterSearchContract = SearchPresenter(createRepository())
+    private val presenter: PresenterSearchContract = SearchPresenter(this, createRepository())
     private var totalCount: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        presenter.onAttach(this)
         setUI()
     }
 
@@ -63,9 +64,7 @@ class MainActivity : AppCompatActivity(), ViewSearchContract {
         })
     }
 
-    private fun createRepository(): GitHubRepository {
-        return GitHubRepository(createRetrofit().create(GitHubApi::class.java))
-    }
+    private fun createRepository(): RepositoryContract = FakeGitHubRepository()
 
     private fun createRetrofit(): Retrofit {
         return Retrofit.Builder()
@@ -78,6 +77,12 @@ class MainActivity : AppCompatActivity(), ViewSearchContract {
         searchResults: List<SearchResult>,
         totalCount: Int,
     ) {
+        with(totalCountTextView) {
+            visibility = View.VISIBLE
+            text =
+                String.format(Locale.getDefault(), getString(R.string.results_count), totalCount)
+        }
+
         this.totalCount = totalCount
         adapter.updateResults(searchResults)
     }
@@ -96,11 +101,6 @@ class MainActivity : AppCompatActivity(), ViewSearchContract {
         } else {
             progressBar.visibility = View.GONE
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        presenter.onDetach()
     }
 
     companion object {
